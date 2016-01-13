@@ -1,0 +1,89 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                   Define colors once.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#define C_Black1     #EDEDED
+#define C_Black2     #969694
+
+#define C_Red1       #D7005F
+#define C_Red2       #D7005F
+
+#define C_Green1     #718C00
+#define C_Green2     #718C00
+
+#define C_Yellow1    #D75F00
+#define C_Yellow2    #D75F00
+
+#define C_Blue1      #4271AE
+#define C_Blue2      #4271AE
+
+#define C_Magenta1   #8959A8
+#define C_Magenta2   #8959A8
+
+#define C_Cyan1      #3E999F
+#define C_Cyan2      #3E999F
+
+#define C_White1     #4D4D4C
+#define C_White2     #F5F5F5
+
+#define C_Foreground #4D4D4C
+#define C_Background #EEEEEE
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                   Assign regular X colors
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+URxvt.foreground: C_Foreground
+URxvt.background: C_Background
+
+! black
+URxvt.color0: C_Black1
+URxvt.color8: C_Black2
+
+! red
+URxvt.color1: C_Red1
+URxvt.color9: C_Red2
+
+! green
+URxvt.color2: C_Green1
+URxvt.color10: C_Green2
+
+! yellow / orange
+URxvt.color3: C_Yellow1
+URxvt.color11: C_Yellow2
+
+! blue
+URxvt.color4: C_Blue1
+URxvt.color12: C_Blue2
+
+! magenta
+URxvt.color5: C_Magenta1
+URxvt.color13: C_Magenta2
+
+! cyan
+URxvt.color6: C_Cyan1
+URxvt.color14: C_Cyan2
+
+! white
+URxvt.color7: C_White1
+URxvt.color15: C_White2
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                   Rofi configuration
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+rofi.hide-scrollbar: false
+!rofi.fg:                             #4D4D4C
+!rofi.bg:                             C_Black1
+!rofi.bgalt:                          C_Black2
+!rofi.fg-active:                      #268BD2
+!rofi.fg-urgent:                      #DC322F
+!rofi.hlfg-active:                    #FDF6E3
+!rofi.hlfg-urgent:                    #FDF6E3
+!rofi.bg-active:                      #FDF6E3
+!rofi.bg-urgent:                      #FDF6E3
+!rofi.hlbg-active:                    #268BD2
+!rofi.hlbg-urgent:                    #DC322F
+!rofi.hlfg:                           #EEE8D5
+!rofi.hlbg:                           #586E75
+!rofi.bc:                             #002B36
+!rofi.font: Fantasque Sans Mono 13

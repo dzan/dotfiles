@@ -1,0 +1,54 @@
+[options]
+#font                = Droid Sans Mono Slashed for Powerline 11
+font                = Fantasque Sans Mono 13
+resize_grip         = false
+scroll_on_output    = false
+scroll_on_keystroke = true
+audible_bell        = false
+visible_bell        = true
+mouse_autohide      = true
+allow_bold          = true
+dynamic_title       = true
+urgent_on_bell      = true
+clickable_url       = true
+scrollback_lines    = 10000
+search_wrap         = true
+browser             = firefox
+
+[colors]
+# PaperColor theme
+# Made by: Sander Bogaert
+# Scheme by: NLKNguyen
+#            http://nlknguyen.com/2015/05/21/vim-paper-color-theme/
+
+foreground        = #4D4D4C
+foreground_bold   = #4D4D4C
+cursor            = #373b41
+background        = #EEEEEE
+
+# 16 color space
+color0            = #EDEDED
+color1            = #D7005F
+color2            = #718C00
+color3            = #D75F00
+color4            = #4271AE
+color5            = #8959A8
+color6            = #3E999F
+color7            = #4D4D4C
+color8            = #969694
+color9            = #D7005F
+color10           = #718C00
+color11           = #D75F00
+color12           = #4271AE
+color13           = #8959A8
+color14           = #3E999F
+color15           = #4D4D4C
+
+# 256 color space
+#color16          = #de935f
+#color17          = #a3685a
+#color18          = #282a2e
+#color19          = #373b41
+#color20          = #b4b7b4
+#color21          = #e0e0e0
+#color21          = #e0e0e0

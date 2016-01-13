@@ -1,0 +1,9 @@
+"3.10.1 (created: 2015/08/25 00:41:59)
+
+highlight Hint font-size:150%;color:white;background-color:red;padding:5px;
+set hintchars=abcdefghijklmnopqrstuvwxyz
+set noscrollbars
+set gui=nonavigation
+source! /home/dzan/.vimperatorrc.local
+
+" vim: set ft=vimperator:

@@ -1,0 +1,74 @@
+; A configuration file consists of sections, each led by a [section] header,
+; followed by key/value entries separated by a specific string (= or : by default).
+; By default, section names are case sensitive but keys are not. Leading and
+; trailing whitespace is removed from keys and values. Values can be omitted,
+; in which case the key/value delimiter may also be left out. Values can also
+; span multiple lines, as long as they are indented deeper than the first line
+; of the value. Depending on the parser’s mode, blank lines may be treated
+; as parts of multiline values or ignored.
+
+; Configuration files may include comments, prefixed by specific characters
+; (# and ; by default). Comments may appear on their own on an otherwise
+; empty line, possibly indented.
+
+; The [bar] section is reserved and used by the bar script. It contains the
+; variables bound to the script and should not be mirrored to any file in the
+; captain.d directory.
+
+[bar]
+background = "#FFFFFFFF"
+foreground = "#FF000000"
+format = "window|title|volume|battery|clock"
+height = 25
+fonts = "monospace-9"
+        "-wuncon-siji-medium-r-normal--10-100-75-75-c-80-iso10646-1"
+dock = "top"
+force = true
+offset = 0
+
+; Anything below here is optional.
+
+; Any manual script requires you to define 'manual = true'. All of the variables
+; except reload are omited in the process. Other variables are to be placed manually
+; by wrapping them in '<#' & '#>'.
+
+[window]
+manual = true
+reload = 0.1
+
+; You can use dashes, these will be converted to underscores later. This also
+; means you need to reference to them with underscores in the script.
+
+passive = '#FFAF652F'
+focused = '#FFC8B55B'
+
+; Events look the same, but are defined differently. You wrap them in '<@ & @>'
+; A valid event would be '%{A1:<@event-name@>:}Hi!%{A}'.
+
+; Example of normal scripts.
+
+[clock]
+background = "#FF000000"
+foreground = "#FFFFFFFF"
+overline = true
+scroll-up = "notify-send 'Scrolled up!'"
+scroll-down = "notify-send 'Scrolled down!'"
+mouse-middle = "notify-send 'Middle click!'"
+mouse-left = "notify-send 'Left click!'"
+mouse-right = "notify-send 'Right click!'"
+reload = 5
+
+[title]
+background = "#FF000000"
+foreground = "#FFFFFFFF"
+line = "#FF1134FF"
+overline = true
+underline = true
+scroll-up = "notify-send 'Scrolled up!'"
+scroll-down = "notify-send 'Scrolled down!'"
+mouse-middle = "notify-send 'Middle click!'"
+mouse-left = "notify-send 'Left click!'"
+mouse-right = "notify-send 'Right click!'"
+reload  = 0.1
+
+# vim:syntax=dosini

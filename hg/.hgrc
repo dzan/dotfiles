@@ -1,0 +1,14 @@
+[ui]
+username = sander
+editor = vim
+
+[extensions]
+rebase =
+shelve =
+color =
+graphlog =
+histedit =
+strip =
+purge =
+
+[alias]
