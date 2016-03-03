@@ -62,6 +62,16 @@ set hlsearch
 set number
 set relativenumber           " dislay relative line numbers for movement cmd
 
+" History
+set history=1000             " remember more commands and search history
+set undolevels=1000          " retain my undo levels
+set wildignore=*.swp,*.bak,*.class
+set nobackup                 " no backup files!
+set noswapfile               " no backup files
+set undofile                 " create undo file keeps working after open/close
+set undodir=~/.vim/tmp/      " don't leave the undo files everywhere
+set backupdir=~/.vim/tmp/    " don't leave the undo files everywhere
+
 " Show hidden characters.
 set list
 set listchars=tab:▸\ ,eol:¬
@@ -114,6 +124,13 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Visual mode move lines up or down
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
+" Visual selection to search.
+vnoremap // y/<C-R>"<CR>
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -148,10 +165,24 @@ autocmd! User GoyoLeave Limelight!
 "
 let g:instant_markdown_autostart = 0
 
+"""""""""""" Markdown """""""""""" 
+"
+let g:vim_markdown_no_default_key_mappings=1
+let g:vim_markdown_folding_disabled=1
+
 """""""""""""" Signify """""""""""""" 
 "
 let g:signify_mapping_toggle_highlight = '<leader>sh'   "use Signify plugin to highlight the changes
 
 nmap <leader>sn <plug>(signify-next-jump)               "jump to next hunk using Signify
 nmap <leader>sp <plug>(signify-prev-jump)               "jump to previous hunk using Signify
+
+"""""""""""""" Airline """""""""""""" 
+"
+let g:airline#extensions#tabline#enabled = 1        " Let airline handle the tabs bar
+let g:airline#extensions#tabline#tab_nr_type = 1    " tab number
+let g:airline_powerline_fonts = 1                   " user powerline font patch
+let g:airline_theme='PaperColor'
+
+set laststatus=2                                    " necesarry for airline to show
 "}}}
