@@ -24,7 +24,7 @@ browser             = firefox
 foreground        = #4D4D4C
 foreground_bold   = #4D4D4C
 cursor            = #373b41
-background        = #EEEEEE
+background        = rgba(238, 238, 238, 0.90)
 
 # 16 color space
 color0            = #EDEDED
