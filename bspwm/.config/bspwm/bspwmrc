@@ -7,7 +7,7 @@ sxhkd &
 unclutter &
 
 # Overall bspwm configuration.
-bspc config border_width        2
+bspc config border_width        3
 bspc config window_gap          12
 bspc config top_padding         26
 
@@ -16,7 +16,8 @@ bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_by_distance   true
 
-bspc monitor eDP1 -d I II III IV V VI VII VIII IX X
+bspc monitor eDP1 -d I II III IV V
+bspc monitor DP1 -d VI VII VIII IX X
 
 bspc rule -a Gimp           follow=on floating=on
 bspc rule -a Volume Control follow=on floating=on
@@ -33,11 +34,14 @@ bspc config active_locked_border_color      "#D7005F"
 bspc config normal_locked_border_color      "#6C6C6C"
 bspc config urgent_border_color             "#CB4B16"
 
-# Bar - panel on top.
-captain &
+# Wallpaper
+feh --bg-scale ~/.config/wallpaper.jpg &
 
 # Default cursor to arrow.
 xsetroot -cursor_name left_ptr &
+
+# Compositor
+(compton --config ~/.config/compton/compton.conf -b && sleep 2) &
 
 # Auto mounting.
 #(sleep 1s && udiskie) &
