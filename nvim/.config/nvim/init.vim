@@ -40,6 +40,8 @@ filetype plugin indent on   " detect plugins and indentation based on filetype
 
 colorscheme PaperColor
 set background=light
+hi Normal ctermbg=none guibg=none
+hi NonText ctermbg=none guibg=none
 set colorcolumn=85          " mark the eol column to keep our formatting tight
 
 " Indenting
