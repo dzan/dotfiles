@@ -16,6 +16,7 @@ Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'mhinz/vim-signify'
 
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-airline'
 
 Plug 'plasticboy/vim-markdown'
@@ -23,6 +24,7 @@ Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'md'] }
 
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
+Plug 'scrooloose/syntastic'
 
 Plug 'Lokaltog/vim-easymotion'            " better navigation
 Plug 'majutsushi/tagbar'
@@ -74,6 +76,8 @@ set undofile                 " create undo file keeps working after open/close
 set undodir=~/.vim/tmp/      " don't leave the undo files everywhere
 set backupdir=~/.vim/tmp/    " don't leave the undo files everywhere
 
+set clipboard+=unnamedplus
+
 " Show hidden characters.
 set list
 set listchars=tab:▸\ ,eol:¬
@@ -85,7 +89,7 @@ endif
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"     Key bindings                                      
+"     Key bindings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{
 let mapleader = ","
@@ -94,11 +98,8 @@ let mapleader = ","
 "nnoremap <F2> :NERDTreeTabsToggle<CR>
 "nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TagbarToggle<CR>
+set pastetoggle=<F5>
 "nnoremap <F6> :GundoToggle<CR>
-
-" smash escape
-inoremap jk <esc>
-inoremap kj <esc>
 
 " yank filename.c:linenumber to the system clipboard
 nnoremap <leader>y :let @+=expand('%:t') . ':' . line(".")<CR>
@@ -139,7 +140,7 @@ vnoremap // y/<C-R>"<CR>
 "     Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{
-"""""""""""" Fzf """""""""""" 
+"""""""""""" Fzf """"""""""""
 "
 let g:fzf_layout = { 'up': '~40%' }
 "let g:fzf_layout = { 'window': 'enew' }
@@ -152,39 +153,68 @@ nnoremap <silent> [fzf]m :<C-u>History<cr>
 nnoremap <silent> [fzf]t :<C-u>Tags<cr>
 nnoremap <silent> [fzf]/ :<C-u>Ag<space>
 
-"""""""""""" Startify """""""""""" 
+"""""""""""" Startify """"""""""""
 "
 let g:startify_change_to_vcs_root = 1
 let g:startify_show_sessions = 1
 nnoremap <F1> :Startify<cr>
 
-"""""""""""" Goyo/Limelight """""""""""" 
+"""""""""""" Goyo/Limelight """"""""""""
 "
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
-"""""""""""" Instant Markdown """""""""""" 
+"""""""""""" Instant Markdown """"""""""""
 "
 let g:instant_markdown_autostart = 0
 
-"""""""""""" Markdown """""""""""" 
+"""""""""""" Markdown """"""""""""
 "
 let g:vim_markdown_no_default_key_mappings=1
 let g:vim_markdown_folding_disabled=1
 
-"""""""""""""" Signify """""""""""""" 
+"""""""""""""" Signify """"""""""""""
 "
 let g:signify_mapping_toggle_highlight = '<leader>sh'   "use Signify plugin to highlight the changes
 
 nmap <leader>sn <plug>(signify-next-jump)               "jump to next hunk using Signify
 nmap <leader>sp <plug>(signify-prev-jump)               "jump to previous hunk using Signify
 
-"""""""""""""" Airline """""""""""""" 
+"""""""""""""" Airline """"""""""""""
 "
 let g:airline#extensions#tabline#enabled = 1        " Let airline handle the tabs bar
 let g:airline#extensions#tabline#tab_nr_type = 1    " tab number
 let g:airline_powerline_fonts = 1                   " user powerline font patch
-let g:airline_theme='PaperColor'
+let g:airline_theme='papercolor'
 
 set laststatus=2                                    " necesarry for airline to show
+
+"""""""""""""" Vim-Go """"""""""""""
+"
+let g:go_fmt_command = "goimports"
+let g:go_fmt_autosave = 1
+let g:go_fmt_fail_silently = 0
+
+" Syntastic
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
+
+" Highlight all
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+"""""""""""""" Syntastic """"""""""""""
+"
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 "}}}
