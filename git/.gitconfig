@@ -12,3 +12,5 @@
 
 [url "git@bitbucket.org:"]
   insteadOf = https://bitbucket.org/
+[pull]
+	rebase = true
