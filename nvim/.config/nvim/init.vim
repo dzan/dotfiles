@@ -11,6 +11,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-obsession'
 
+Plug 'JDevlieghere/llvm.vim'
+Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'tpope/vim-commentary'
+
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'mhinz/vim-signify'
@@ -19,12 +23,13 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-airline'
 
-Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
 Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'md'] }
 
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
-Plug 'scrooloose/syntastic'
+Plug 'rhysd/vim-clang-format'
+"Plug 'scrooloose/syntastic'
 
 Plug 'Lokaltog/vim-easymotion'            " better navigation
 Plug 'majutsushi/tagbar'
@@ -36,46 +41,52 @@ call plug#end()
 "     General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{
+" Required (custom shells and instant-markdown osx)
+"au FileType markdown setl shell=bash\ -i
+
 " Code layout and style.
 syntax on
-filetype plugin indent on   " detect plugins and indentation based on filetype
+filetype plugin indent on       " detect plugins and indentation based on filetype
 
-colorscheme PaperColor
+colorscheme papercolor
 set background=light
-hi Normal ctermbg=none guibg=none
-hi NonText ctermbg=none guibg=none
-set colorcolumn=85          " mark the eol column to keep our formatting tight
+set colorcolumn=85              " mark the eol column to keep our formatting tight
 
 " Indenting
-set tabstop=4             " a tab is four spaces
-set expandtab             " don't use tabs, insert spaces Ctrl-V Tab inserts a real tab
+set tabstop=4                   " a tab is four spaces
+set expandtab                   " don't use tabs, insert spaces Ctrl-V Tab inserts a real tab
 
-set autoindent            " always set autoindenting on
-set copyindent            " copy the previous indentation on autoindenting
-set shiftwidth=4          " number of spaces to use for autoindenting
-set shiftround            " use multiple of shiftwidth when indenting with '<' and '>'
+set autoindent                  " always set autoindenting on
+set copyindent                  " copy the previous indentation on autoindenting
+set shiftwidth=4                " number of spaces to use for autoindenting
+set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
+
+set foldmethod=syntax
+set foldlevelstart=1
+let xml_syntax_folding=1        " XML folding
 
 " Handling search behaviour.
-set ignorecase              " ignore case when searching
-set smartcase               " ignore case if search pattern is all one case
+set ignorecase                  " ignore case when searching
+set smartcase                   " ignore case if search pattern is all one case
 set incsearch
 set showmatch
 set hlsearch
 
 " Enable line number.
 set number
-set relativenumber           " dislay relative line numbers for movement cmd
+set relativenumber              " dislay relative line numbers for movement cmd
 
 " History
-set history=1000             " remember more commands and search history
-set undolevels=1000          " retain my undo levels
+set history=1000                " remember more commands and search history
+set undolevels=1000             " retain my undo levels
 set wildignore=*.swp,*.bak,*.class
-set nobackup                 " no backup files!
-set noswapfile               " no backup files
-set undofile                 " create undo file keeps working after open/close
-set undodir=~/.vim/tmp/      " don't leave the undo files everywhere
-set backupdir=~/.vim/tmp/    " don't leave the undo files everywhere
+set nobackup                    " no backup files!
+set noswapfile                  " no backup files
+set undofile                    " create undo file keeps working after open/close
+set undodir=~/.vim/tmp/         " don't leave the undo files everywhere
+set backupdir=~/.vim/tmp/       " don't leave the undo files everywhere
 
+" Use system clipboard
 set clipboard+=unnamedplus
 
 " Show hidden characters.
@@ -86,6 +97,10 @@ set listchars=tab:▸\ ,eol:¬
 if has("autocmd")
     au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+" Enable spell for filetypes
+autocmd BufRead,BufNewFile *.md setlocal spell
+autocmd FileType gitcommit setlocal spell
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -95,11 +110,9 @@ endif
 let mapleader = ","
 
 " Plugin windows
-"nnoremap <F2> :NERDTreeTabsToggle<CR>
-"nnoremap <F3> :NERDTreeFind<CR>
 nnoremap <F4> :TagbarToggle<CR>
+nnoremap <F6> :Goyo<CR>
 set pastetoggle=<F5>
-"nnoremap <F6> :GundoToggle<CR>
 
 " yank filename.c:linenumber to the system clipboard
 nnoremap <leader>y :let @+=expand('%:t') . ':' . line(".")<CR>
@@ -151,7 +164,13 @@ nnoremap [fzf] <nop>
 nnoremap <silent> [fzf]f :<C-u>Files<cr>
 nnoremap <silent> [fzf]m :<C-u>History<cr>
 nnoremap <silent> [fzf]t :<C-u>Tags<cr>
-nnoremap <silent> [fzf]/ :<C-u>Ag<space>
+nnoremap <silent> [fzf]/ :<C-u>Ag<cr>
+
+"""""""""""" Clang-Format """""""""""
+"
+au FileType c,cpp,objc ClangFormatAutoEnable
+let g:clang_format#detect_style_file = 1
+"let g:clang_format#auto_format_on_insert_leave = 1
 
 """""""""""" Startify """"""""""""
 "
@@ -185,7 +204,7 @@ nmap <leader>sp <plug>(signify-prev-jump)               "jump to previous hunk u
 let g:airline#extensions#tabline#enabled = 1        " Let airline handle the tabs bar
 let g:airline#extensions#tabline#tab_nr_type = 1    " tab number
 let g:airline_powerline_fonts = 1                   " user powerline font patch
-let g:airline_theme='papercolor'
+let g:airline_theme='PaperColor'
 
 set laststatus=2                                    " necesarry for airline to show
 
@@ -207,14 +226,36 @@ let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 
+"""""""""""""" Doxygen """"""""""""""
+let g:DoxygenToolkit_commentType = "C++"    " have :Dox use /// style
+let g:load_doxygen_syntax=1                 " highlight doxygen comments
+autocmd Filetype c,cpp set comments^=:///   " fix comments to work nicely
+
+"""""""""""""" Tagbar """"""""""""""
+" Add support for markdown files in tagbar.
+let g:tagbar_type_markdown = {
+    \ 'ctagstype': 'markdown',
+    \ 'ctagsbin' : '/usr/local/bin/markdown2ctags.py',
+    \ 'ctagsargs' : '-f - --sort=yes',
+    \ 'kinds' : [
+        \ 's:sections',
+        \ 'i:images'
+    \ ],
+    \ 'sro' : '|',
+    \ 'kind2scope' : {
+        \ 's' : 'section',
+    \ },
+    \ 'sort': 0,
+\ }
+
 """""""""""""" Syntastic """"""""""""""
 "
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
 "}}}
