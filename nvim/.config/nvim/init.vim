@@ -4,7 +4,6 @@
 "{{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
@@ -19,21 +18,26 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Goyo' }
 Plug 'mhinz/vim-signify'
 
-Plug 'NLKNguyen/papercolor-theme'
+"Plug 'NLKNguyen/papercolor-theme'
+Plug 'chriskempson/base16-vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'bling/vim-airline'
 
 Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
-Plug 'suan/vim-instant-markdown', { 'for': ['markdown', 'md'] }
+"Plug 'suan/vim-instant-markdown' ", { 'for': ['markdown', 'md'] }
+Plug 'alderz/smali-vim'
 
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
-Plug 'rhysd/vim-clang-format'
+"Plug 'rhysd/vim-clang-format'
 "Plug 'scrooloose/syntastic'
 
 Plug 'Lokaltog/vim-easymotion'            " better navigation
 Plug 'majutsushi/tagbar'
 
+Plug 'triglav/vim-visual-increment'
+Plug 'Chiel92/vim-autoformat'
+Plug 'chrisbra/csv.vim'
 call plug#end()
 "}}}
 
@@ -48,8 +52,12 @@ call plug#end()
 syntax on
 filetype plugin indent on       " detect plugins and indentation based on filetype
 
-colorscheme papercolor
-set background=light
+let base16colorspace=256  " Access colors present in 256 colorspace
+colorscheme base16-default-dark
+
+"colorscheme papercolor
+"set background=light
+
 set colorcolumn=85              " mark the eol column to keep our formatting tight
 
 " Indenting
@@ -61,9 +69,9 @@ set copyindent                  " copy the previous indentation on autoindenting
 set shiftwidth=4                " number of spaces to use for autoindenting
 set shiftround                  " use multiple of shiftwidth when indenting with '<' and '>'
 
-set foldmethod=syntax
-set foldlevelstart=1
-let xml_syntax_folding=1        " XML folding
+"set foldmethod=syntax
+"set foldlevelstart=1
+"let xml_syntax_folding=1        " XML folding
 
 " Handling search behaviour.
 set ignorecase                  " ignore case when searching
@@ -101,6 +109,9 @@ endif
 " Enable spell for filetypes
 autocmd BufRead,BufNewFile *.md setlocal spell
 autocmd FileType gitcommit setlocal spell
+
+" Enable editing of crontabs
+au BufEnter /private/tmp/crontab.* setl backupcopy=yes
 "}}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -147,12 +158,22 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 
 " Visual selection to search.
 vnoremap // y/<C-R>"<CR>
+
+" Cycle through buffers with (CTRL +) tab
+nnoremap <silent> <Tab> gt
+nnoremap <silent> <S-Tab> gT
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "     Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "{{{
+"""""""""""" YCM """"""""""""
+"
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist=['~/.vim/*']
+
 """""""""""" Fzf """"""""""""
 "
 let g:fzf_layout = { 'up': '~40%' }
@@ -166,11 +187,14 @@ nnoremap <silent> [fzf]m :<C-u>History<cr>
 nnoremap <silent> [fzf]t :<C-u>Tags<cr>
 nnoremap <silent> [fzf]/ :<C-u>Ag<cr>
 
-"""""""""""" Clang-Format """""""""""
+"""""""""""" Autoformat """""""""""""
 "
-au FileType c,cpp,objc ClangFormatAutoEnable
-let g:clang_format#detect_style_file = 1
-"let g:clang_format#auto_format_on_insert_leave = 1
+vmap = :Autoformat<CR>
+nmap =G :.,$Autoformat<CR>
+nmap == :Autoformat<CR>
+nmap =% :.,/}/; Autoformat<CR>
+nmap = :.-1,.Autoformat<CR>
+nmap = :.,.+1Autoformat<CR>
 
 """""""""""" Startify """"""""""""
 "
@@ -185,7 +209,7 @@ autocmd! User GoyoLeave Limelight!
 
 """""""""""" Instant Markdown """"""""""""
 "
-let g:instant_markdown_autostart = 0
+"let g:instant_markdown_autostart = 0
 
 """""""""""" Markdown """"""""""""
 "
@@ -204,7 +228,8 @@ nmap <leader>sp <plug>(signify-prev-jump)               "jump to previous hunk u
 let g:airline#extensions#tabline#enabled = 1        " Let airline handle the tabs bar
 let g:airline#extensions#tabline#tab_nr_type = 1    " tab number
 let g:airline_powerline_fonts = 1                   " user powerline font patch
-let g:airline_theme='PaperColor'
+"let g:airline_theme='PaperColor'
+let g:airline_theme='base16_default'
 
 set laststatus=2                                    " necesarry for airline to show
 
@@ -247,6 +272,22 @@ let g:tagbar_type_markdown = {
     \ },
     \ 'sort': 0,
 \ }
+
+"""""""""""""" Integrate with Tmux """"""""""""""
+"
+function! TmuxMove(direction)
+        let wnr = winnr()
+        silent! execute 'wincmd ' . a:direction
+        " If the winnr is still the same after we moved, it is the last pane
+        if wnr == winnr()
+                call system('tmux select-pane -' . tr(a:direction, 'phjkl', 'lLDUR'))
+        end
+endfunction
+
+nnoremap <silent> <c-h> :call TmuxMove('h')<cr>
+nnoremap <silent> <c-j> :call TmuxMove('j')<cr>
+nnoremap <silent> <c-k> :call TmuxMove('k')<cr>
+nnoremap <silent> <c-l> :call TmuxMove('l')<cr>
 
 """""""""""""" Syntastic """"""""""""""
 "

@@ -1,0 +1,18 @@
+# llvm debugging
+command regex ldt 's/(.+)/call %1->getType()->dump()/'
+command regex ld 's/(.+)/call %1->dump()/'
+
+# ft function to redirect to file out
+command script import ~/.lldb/fileout.py
+
+# alias to connect to iphone
+command alias iphone platform select remote-ios
+command alias connect process connect connect://localhost:6666
+
+# alias to stop after loading libs
+command alias stopshared settings set target.process.stop-on-sharedlibrary-events 1
+
+# prefer intel
+settings set target.x86-disassembly-flavor intel
+
+command script import  ~/Source/lldbinit/lldbinit.py
